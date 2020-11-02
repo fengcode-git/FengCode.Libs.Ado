@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>FengCode</Authors>
+    <Company>FengCode</Company>
+    <Description>ADO.NET扩展库</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/fengcode-git/FengCode.Libs.Ado</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/fengcode-git/FengCode.Libs.Ado</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>ADO.NET</PackageTags>
+  </PropertyGroup>
+
+</Project>
