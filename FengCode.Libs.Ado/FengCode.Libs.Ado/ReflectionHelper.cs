@@ -30,6 +30,18 @@ namespace FengCode.Libs.Ado
             }
         }
 
+        /// <summary>
+        /// 检查类型是否是可空泛型
+        /// </summary>
+        public static bool IsNullable(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
         public static TableMapper ToMapper<T>() where T : BaseEntity
         {
             Type type = typeof(T);
@@ -82,6 +94,7 @@ namespace FengCode.Libs.Ado
                     isAuto = false;
                 }
                 ColumnAttribute columnAttribute = property.GetCustomAttribute<ColumnAttribute>();
+                IndexAttribute indexAttribute = property.GetCustomAttribute<IndexAttribute>();
                 string columnName = "";
                 BaseValueConvert valueConvert = null;
                 if (columnAttribute != null)
@@ -123,7 +136,13 @@ namespace FengCode.Libs.Ado
                     PropertyInfo = property,
                     PropertyName = property.Name,
                     ValueConvert = valueConvert,
-                    IsAuto = isAuto
+                    IsAuto = isAuto,
+                    IsEnum = property.PropertyType.IsEnum,
+                    IsGuidString = property.PropertyType == typeof(string) && columnName.ToLower().Contains("id"),
+                    IsCanNull = IsNullable(property.PropertyType),
+                    IsIndex = indexAttribute != null,
+                    DbType = (columnAttribute != null && !string.IsNullOrWhiteSpace(columnAttribute.DbType)) ? columnAttribute.DbType : "",
+                    DbDefaultValue = (columnAttribute != null && !string.IsNullOrWhiteSpace(columnAttribute.DbDefaultValue)) ? columnAttribute.DbDefaultValue : ""
                 };
                 tableMapper.Add(columnMapper);
             }
